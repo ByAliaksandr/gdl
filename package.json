@@ -5,7 +5,8 @@
   "scripts": {
     "build": "webpack",
     "test": "jest",
-    "watch": "webpack serve"
+    "watch": "webpack serve",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
@@ -14,6 +15,9 @@
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^4.7.2",
     "clean-webpack-plugin": "^4.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1",
     "ts-jest": "^28.0.4",
     "ts-loader": "^9.3.0",
     "ts-node": "^10.8.1",
@@ -26,5 +30,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
     "redux": "^4.2.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
