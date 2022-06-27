@@ -1,4 +1,4 @@
-export interface ViewStep {
+export interface Step {
   stepName: string;
   stepNumber: number;
 }
