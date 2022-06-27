@@ -7,7 +7,7 @@ The assessment description can be found in the README.pdf file
 Various events are fired on the page. Events data comes to the datalayer. The datalayer represents the current state of the application. Several changes in datalayer are tracked by analytics.
 
 In short can be seen as
-events -> store(datalayer) -> analytics
+`events -> store(datalayer) -> analytics`
 
 Events are published by `createEventPublisher` function (see `src/events/event-publisher.ts`);
 `createEventPublisher` dispatches an action which updates the datalayer via reducers functions. There are two Redux Toolkit's slices: `appInfoSlice` (see `src/data-layer/page-info-slice.ts`) and `appInfoSlice` (see `src/data-layer/app-info-slice.ts`). These slices update datalayer object with page and app data. `AnalyticsTracker` (see `src/analytics/analytics-tracker.ts`) detects changes in datalayer and sends data to analytics platform.
