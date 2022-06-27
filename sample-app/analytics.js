@@ -10,7 +10,7 @@
       });
       // omitted: server call.
 
-      console.log('!!!!! trackPage', pageName, dimensions);
+      // console.log('!!!!! trackPage', pageName, dimensions);
     },
 
     trackEvent: function (eventName, dimensions) {
@@ -21,7 +21,7 @@
       });
       // omitted: server call.
 
-      console.log('!!!!! trackEvent', eventName, dimensions);
+      // console.log('!!!!! trackEvent', eventName, dimensions);
     },
 
     trackConversion: function (revenue, dimensions) {
@@ -32,7 +32,7 @@
       });
       // omitted: server call.
 
-      console.log('!!!!! trackConversion', revenue, dimensions);
+      // console.log('!!!!! trackConversion', revenue, dimensions);
     },
 
     calls: [],

@@ -16,6 +16,7 @@ import { LocationArea } from './interfaces/location-area.interface';
 import { Package } from './interfaces/package.interface';
 import { GeneralError } from './interfaces/general-error.interface';
 import { Rate } from './interfaces/rate.interface';
+import { Events } from './interfaces/events.enum';
 
 export const createEventPublisher = (dispatch: Dispatch) => (name: string, payload: object) => {
   const data = {
@@ -24,31 +25,31 @@ export const createEventPublisher = (dispatch: Dispatch) => (name: string, paylo
   };
 
   switch (name) {
-    case 'pageInfo':
+    case Events.PAGE_INFO:
       dispatch(setPageInfo(data as { name: string; payload: PageInfoPageId }));
       break;
-    case 'viewStep':
+    case Events.VIEW_STEP:
       dispatch(updateViewStep(data as { name: string; payload: Step }));
       break;
-    case 'originComplete':
+    case Events.ORIGIN_COMPLETE:
       dispatch(setOrigin(data as { name: string; payload: LocationArea }));
       break;
-    case 'destinationComplete':
+    case Events.DESTINATION_COMPLETE:
       dispatch(setDestination(data as { name: string; payload: LocationArea }));
       break;
-    case 'packagesComplete':
+    case Events.PACKAGES_COMPLETE:
       dispatch(setPackageCount(data as { name: string; payload: Package }));
       break;
-    case 'shipmentComplete':
+    case Events.SHIPMENT_COMPLETE:
       dispatch(completeShipment({ name }));
       break;
-    case 'shipAgain':
+    case Events.SHIP_AGAIN:
       dispatch(shipAgain({ name }));
       break;
-    case 'viewRate':
+    case Events.VIEW_RATE:
       dispatch(setRate(data as { name: string; payload: Rate }));
       break;
-    case 'error':
+    case Events.ERROR:
       dispatch(addError(data as { name: string; payload: GeneralError }));
       break;
 
