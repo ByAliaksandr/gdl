@@ -131,12 +131,12 @@ const appInfoSlice = createSlice({
   },
 });
 
-function getAnalyticsAction(name: string): AnalyticsAction {
+const getAnalyticsAction = (name: string): AnalyticsAction => {
   return {
     _analyticsActionName: name,
     _analyticsActionId: nanoid(),
   };
-}
+};
 
 export const { updateViewStep, setOrigin, setDestination, setPackageCount, setRate, completeShipment, shipAgain, addError } =
   appInfoSlice.actions;
