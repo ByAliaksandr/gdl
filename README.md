@@ -24,6 +24,7 @@ Below is the results overview of the 4 individual requirements of the assignment
 4. Write some unit tests for the code you have created. (&cross;)
 
 _Note_ jest configuration is not set by default. Extra time is needed to investigate the jest/webpack configuration.
+_Note_ The project should aim 100% unit tests coverage.
 
 # Development settings
 
