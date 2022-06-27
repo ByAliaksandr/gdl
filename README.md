@@ -18,10 +18,10 @@ The `AnalyticsDebbuger` class is used for debugging purposes. Debugging mechanis
 
 Below is the results overview of the 4 individual requirements of the assignment.
 
-1. Implement logic which updates the data layer according to the specifications. (&check;)
-2. Implement the "Analytics" tracker functionality according to the specifications. (&check;)
-3. Create a useful debugging mechanism which provides details of the events being published, and how they are handled by GDL. (&check;)
-4. Write some unit tests for the code you have created. (&#126;) (See `src/data-layer/page-info-slice.spec.ts`)
+1. Implement logic which updates the data layer according to the specifications. (✅)
+2. Implement the "Analytics" tracker functionality according to the specifications. (✅)
+3. Create a useful debugging mechanism which provides details of the events being published, and how they are handled by GDL. (✅)
+4. Write some unit tests for the code you have created. (🔶) (See `src/data-layer/page-info-slice.spec.ts`)
 
 _Note_ jest configuration is not set by default. Extra time is needed to investigate the jest/webpack configuration.
 
