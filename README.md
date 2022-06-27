@@ -1,6 +1,6 @@
 # Assessment: GDL javascript software engineer
 
-The assessment discription can be found in README.pdf file
+The assessment description can be found in the README.pdf file
 
 # About the project
 
@@ -12,11 +12,11 @@ events -> store(datalayer) -> analytics
 Events are published by `createEventPublisher` function (see `src/events/event-publisher.ts`);
 `createEventPublisher` dispatches an action which updates the datalayer via reducers functions. There are two Redux Toolkit's slices: `appInfoSlice` (see `src/data-layer/page-info-slice.ts`) and `appInfoSlice` (see `src/data-layer/app-info-slice.ts`). These slices update datalayer object with page and app data. `AnalyticsTracker` (see `src/analytics/analytics-tracker.ts`) detects changes in datalayer and sends data to analytics platform.
 
-The `AnalyticsDebbuger` class is used for debugging purposes. Debugging mechanism is activated by executing `window.gdl.debbug()` in browser console.
+The `AnalyticsDebbuger` class is used for debugging purposes. Debugging mechanism is activated by executing `window.gdl.debbug()` in the browser console.
 
 # Requirements results overview
 
-Below is an results overview the 4 individual requirements of the assignment.
+Below is the results overview of the 4 individual requirements of the assignment.
 
 1. Implement logic which updates the data layer according to the specifications. (&check;)
 2. Implement the "Analytics" tracker functionality according to the specifications. (&check;)
@@ -33,4 +33,4 @@ The project employs [prettier](https://prettier.io/docs/en/install.html) with a 
 
 - Why `_analyticsActionName` and `_analyticsActionId` properties are added?
 
-Analytics tracks the datalayer changes. Not all events perform a change in the datalayer. `_analyticsActionName` and `_analyticsActionId` properties keep the following separation `events -> store(datalayer) -> analytics` compate to `events -> analytics`. `_analyticsActionId` guarantees that all events are published even the same event is published multiple times.
+Analytics tracks the datalayer changes. Not all events perform a change in the datalayer. `_analyticsActionName` and `_analyticsActionId` properties keep the following separation `events -> store(datalayer) -> analytics` compate to `events -> analytics`. `_analyticsActionId` guarantees that all events are published even if the same event is published multiple times.
