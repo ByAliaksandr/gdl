@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { GeneralError } from '../events/interfaces/general-error.interface';
 import { LocationArea } from '../events/interfaces/location-area.interface';
 import { Package } from '../events/interfaces/package.interface';
 import { Rate } from '../events/interfaces/rate.interface';
 import { Step } from '../events/interfaces/step.interface';
+import { AnalyticsAction } from './interfaces/action.interface';
 import { AppInfo } from './interfaces/app-info.interface';
 
 const initialState = {} as AppInfo;
@@ -15,55 +16,126 @@ const appInfoSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    updateViewStep(state, action: PayloadAction<Step>) {
-      const payload = action.payload;
-      state.stepName = payload.stepName;
-      state.stepNumber = payload.stepNumber;
-
-      setAnalyticsAction(state, action);
+    updateViewStep: {
+      reducer(state, action: PayloadAction<AnalyticsAction & Step>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name, payload }: { name: string; payload: Step }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            ...payload,
+          },
+        };
+      },
     },
-    setOrigin(state, action: PayloadAction<LocationArea>) {
-      state.origin = action.payload;
-
-      setAnalyticsAction(state, action);
+    setOrigin: {
+      reducer(state, action: PayloadAction<AnalyticsAction & { origin: LocationArea }>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name, payload }: { name: string; payload: LocationArea }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            origin: payload,
+          },
+        };
+      },
     },
-    setDestination(state, action: PayloadAction<LocationArea>) {
-      state.destination = action.payload;
-
-      setAnalyticsAction(state, action);
+    setDestination: {
+      reducer(state, action: PayloadAction<AnalyticsAction & { destination: LocationArea }>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name, payload }: { name: string; payload: LocationArea }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            destination: payload,
+          },
+        };
+      },
     },
-    setPackageCount(state, action: PayloadAction<Package>) {
-      state.packageCount = action.payload.packageCount;
-
-      setAnalyticsAction(state, action);
+    setPackageCount: {
+      reducer(state, action: PayloadAction<AnalyticsAction & { packageCount: number }>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name, payload }: { name: string; payload: Package }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            packageCount: payload.packageCount,
+          },
+        };
+      },
     },
-    setRate(state, action: PayloadAction<Rate>) {
-      state.rate = action.payload;
-
-      setAnalyticsAction(state, action);
+    setRate: {
+      reducer(state, action: PayloadAction<AnalyticsAction & { rate: Rate }>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name, payload }: { name: string; payload: Rate }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            rate: payload,
+          },
+        };
+      },
     },
 
-    completeShipment(state, action) {
-      setAnalyticsAction(state, action);
+    completeShipment: {
+      reducer(state, action: PayloadAction<AnalyticsAction>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name }: { name: string }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+          },
+        };
+      },
     },
 
-    shipAgain(state, action) {
-      setAnalyticsAction(state, action);
+    shipAgain: {
+      reducer(state, action: PayloadAction<AnalyticsAction>) {
+        return { ...state, ...action.payload };
+      },
+      prepare({ name }: { name: string }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+          },
+        };
+      },
     },
 
-    addError(state, action: PayloadAction<GeneralError>) {
-      if (!state.errors) {
-        state.errors = [];
-      }
-      state.errors.push(action.payload);
+    addError: {
+      reducer(state, action: PayloadAction<AnalyticsAction & { error: GeneralError }>) {
+        if (!state.errors) {
+          state.errors = [];
+        }
 
-      setAnalyticsAction(state, action);
+        const payload = action.payload;
+        state.errors.push(payload.error);
+        state._analyticsActionId = payload._analyticsActionId;
+        state._analyticsActionName = payload._analyticsActionName;
+      },
+      prepare({ name, payload }: { name: string; payload: GeneralError }) {
+        return {
+          payload: {
+            ...getAnalyticsAction(name),
+            error: payload,
+          },
+        };
+      },
     },
   },
 });
 
-function setAnalyticsAction(state: AppInfo, action: { type: string }) {
-  state._analyticsAction = action.type;
+function getAnalyticsAction(name: string): AnalyticsAction {
+  return {
+    _analyticsActionName: name,
+    _analyticsActionId: nanoid(),
+  };
 }
 
 export const { updateViewStep, setOrigin, setDestination, setPackageCount, setRate, completeShipment, shipAgain, addError } =

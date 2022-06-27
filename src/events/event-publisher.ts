@@ -18,42 +18,44 @@ import { GeneralError } from './interfaces/general-error.interface';
 import { Rate } from './interfaces/rate.interface';
 
 export const createEventPublisher = (dispatch: Dispatch) => (name: string, payload: object) => {
+  const data = {
+    name,
+    payload,
+  };
+
   switch (name) {
     case 'pageInfo':
-      dispatch(setPageInfo(payload as PageInfoPageId));
+      dispatch(setPageInfo(data as { name: string; payload: PageInfoPageId }));
       break;
     case 'viewStep':
-      dispatch(updateViewStep(payload as Step));
+      dispatch(updateViewStep(data as { name: string; payload: Step }));
       break;
     case 'originComplete':
-      dispatch(setOrigin(payload as LocationArea));
+      dispatch(setOrigin(data as { name: string; payload: LocationArea }));
       break;
     case 'destinationComplete':
-      dispatch(setDestination(payload as LocationArea));
+      dispatch(setDestination(data as { name: string; payload: LocationArea }));
       break;
     case 'packagesComplete':
-      dispatch(setPackageCount(payload as Package));
+      dispatch(setPackageCount(data as { name: string; payload: Package }));
       break;
     case 'shipmentComplete':
-      dispatch(completeShipment(null));
+      dispatch(completeShipment({ name }));
       break;
     case 'shipAgain':
-      dispatch(shipAgain(null));
+      dispatch(shipAgain({ name }));
       break;
     case 'viewRate':
-      dispatch(setRate(payload as Rate));
+      dispatch(setRate(data as { name: string; payload: Rate }));
       break;
     case 'error':
-      dispatch(addError(payload as GeneralError));
+      dispatch(addError(data as { name: string; payload: GeneralError }));
       break;
 
     default:
       dispatch({
         type: 'PUBLISH_EVENT',
-        data: {
-          name,
-          payload,
-        },
+        data,
       });
   }
 };

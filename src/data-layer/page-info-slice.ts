@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { PageInfoPageId } from '../events/interfaces/page-info-page-id.interface';
 import { PageInfo } from './interfaces/page-info.interface';
 
@@ -13,14 +13,16 @@ const pageInfoSlice = createSlice({
   reducers: {
     setPageInfo: {
       reducer(state, action: PayloadAction<PageInfo>) {
-        return { ...action.payload, _analyticsAction: action.type };
+        return { ...action.payload };
       },
-      prepare(pageInfoPageId: PageInfoPageId) {
-        const pageInfo = pageInfoPageId.pageId.split('|');
+      prepare({ name, payload }: { name: string; payload: PageInfoPageId }) {
+        const pageInfo = payload.pageId.split('|');
 
         return {
           payload: {
-            pageId: pageInfoPageId.pageId,
+            _analyticsActionName: name,
+            _analyticsActionId: nanoid(),
+            pageId: payload.pageId,
             countryCode: pageInfo[0],
             languageCode: pageInfo[1],
             pageName: pageInfo.splice(2).join('/'),

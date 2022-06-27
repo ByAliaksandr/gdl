@@ -1,3 +1,4 @@
 export interface AnalyticsAction {
-  _analyticsAction?: string;
+  _analyticsActionName?: string;
+  _analyticsActionId?: string;
 }
