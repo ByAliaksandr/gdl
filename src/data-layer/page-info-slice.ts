@@ -13,7 +13,7 @@ const pageInfoSlice = createSlice({
   reducers: {
     setPageInfo: {
       reducer(state, action: PayloadAction<PageInfo>) {
-        return action.payload;
+        return { ...action.payload, _analyticsAction: action.type };
       },
       prepare(pageInfoPageId: PageInfoPageId) {
         const pageInfo = pageInfoPageId.pageId.split('|');

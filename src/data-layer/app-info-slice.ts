@@ -19,28 +19,54 @@ const appInfoSlice = createSlice({
       const payload = action.payload;
       state.stepName = payload.stepName;
       state.stepNumber = payload.stepNumber;
+
+      setAnalyticsAction(state, action);
     },
     setOrigin(state, action: PayloadAction<LocationArea>) {
       state.origin = action.payload;
+
+      setAnalyticsAction(state, action);
     },
     setDestination(state, action: PayloadAction<LocationArea>) {
       state.destination = action.payload;
+
+      setAnalyticsAction(state, action);
     },
     setPackageCount(state, action: PayloadAction<Package>) {
       state.packageCount = action.payload.packageCount;
+
+      setAnalyticsAction(state, action);
     },
     setRate(state, action: PayloadAction<Rate>) {
       state.rate = action.payload;
+
+      setAnalyticsAction(state, action);
     },
+
+    completeShipment(state, action) {
+      setAnalyticsAction(state, action);
+    },
+
+    shipAgain(state, action) {
+      setAnalyticsAction(state, action);
+    },
+
     addError(state, action: PayloadAction<GeneralError>) {
       if (!state.errors) {
         state.errors = [];
       }
       state.errors.push(action.payload);
+
+      setAnalyticsAction(state, action);
     },
   },
 });
 
-export const { updateViewStep, setOrigin, setDestination, setPackageCount, setRate, addError } = appInfoSlice.actions;
+function setAnalyticsAction(state: AppInfo, action: { type: string }) {
+  state._analyticsAction = action.type;
+}
+
+export const { updateViewStep, setOrigin, setDestination, setPackageCount, setRate, completeShipment, shipAgain, addError } =
+  appInfoSlice.actions;
 
 export default appInfoSlice.reducer;

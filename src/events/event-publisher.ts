@@ -1,6 +1,15 @@
 import { Dispatch } from 'redux';
 import { setPageInfo } from '../data-layer/page-info-slice';
-import { addError, setDestination, setOrigin, setPackageCount, setRate, updateViewStep } from '../data-layer/app-info-slice';
+import {
+  addError,
+  completeShipment,
+  setDestination,
+  setOrigin,
+  setPackageCount,
+  setRate,
+  shipAgain,
+  updateViewStep,
+} from '../data-layer/app-info-slice';
 import { PageInfoPageId } from './interfaces/page-info-page-id.interface';
 import { Step } from './interfaces/step.interface';
 import { LocationArea } from './interfaces/location-area.interface';
@@ -24,6 +33,12 @@ export const createEventPublisher = (dispatch: Dispatch) => (name: string, paylo
       break;
     case 'packagesComplete':
       dispatch(setPackageCount(payload as Package));
+      break;
+    case 'shipmentComplete':
+      dispatch(completeShipment(null));
+      break;
+    case 'shipAgain':
+      dispatch(shipAgain(null));
       break;
     case 'viewRate':
       dispatch(setRate(payload as Rate));
