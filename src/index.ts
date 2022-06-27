@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { createEventPublisher } from './events/event-publisher';
 import pageInfoSliceReducer from './data-layer/page-info-slice';
+import appInfoSliceReducer from './data-layer/app-info-slice';
 
 type GDL = ReturnType<typeof createGdl>;
 
@@ -15,6 +16,7 @@ const createGdl = () => {
   const reducer = combineReducers({
     dataLayer: combineReducers({
       page: pageInfoSliceReducer,
+      app: appInfoSliceReducer,
     }),
   });
 
