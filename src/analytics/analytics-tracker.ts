@@ -1,6 +1,10 @@
 import { Store } from '@reduxjs/toolkit';
+import { AppInfo } from '../data-layer/interfaces/app-info.interface';
 import { DataLayer } from '../data-layer/interfaces/data-layer.interface';
+import { PageInfo } from '../data-layer/interfaces/page-info.interface';
 import { Events } from '../events/interfaces/events.enum';
+import { GeneralError } from '../events/interfaces/general-error.interface';
+import { LocationArea } from '../events/interfaces/location-area.interface';
 
 declare global {
   interface Window {
@@ -29,11 +33,7 @@ export class AnalyticsTracker {
     let analyticsActionName = pageInfo._analyticsActionName;
 
     if (prev !== this.pageInfoAnalyticsActionId && analyticsActionName === AnalyticsTracker.PAGE_EVENT) {
-      window.analytics.trackPage(pageInfo.pageName, {
-        dimension01: pageInfo.pageId,
-        dimension02: pageInfo.countryCode,
-        dimension03: pageInfo.languageCode,
-      });
+      window.analytics.trackPage(pageInfo.pageName, this.getPageInfoDimention(pageInfo));
     }
   }
 
@@ -46,32 +46,64 @@ export class AnalyticsTracker {
     this.appInfoAnalyticsActionId = appInfo._analyticsActionId;
     let analyticsActionName = appInfo._analyticsActionName;
 
-    if (prev !== this.appInfoAnalyticsActionId && AnalyticsTracker.EVENTS.includes(analyticsActionName as Events)) {
-      window.analytics.trackEvent(analyticsActionName, {
-        dimension01: pageInfo.pageId,
-        dimension02: pageInfo.countryCode,
-        dimension03: pageInfo.languageCode,
-        dimension04: appInfo.stepName,
-        dimension05: appInfo.stepNumber,
-        dimension06: appInfo.origin?.country + '>_<' + appInfo.origin?.city,
-        dimension07: appInfo.destination?.country + '>_<' + appInfo.destination?.city,
-        dimension08: appInfo.packageCount,
-        dimension09: appInfo.rate?.currency,
-        //dimension10: appInfo.errors[0].id
-      });
-    } else if (prev !== this.appInfoAnalyticsActionId && analyticsActionName === AnalyticsTracker.CONVERSION_EVENT) {
-      window.analytics.trackConversion(appInfo.rate?.amount, {
-        dimension01: pageInfo.pageId,
-        dimension02: pageInfo.countryCode,
-        dimension03: pageInfo.languageCode,
-        dimension04: appInfo.stepName,
-        dimension05: appInfo.stepNumber,
-        dimension06: appInfo.origin?.country + '>_<' + appInfo.origin?.city,
-        dimension07: appInfo.destination?.country + '>_<' + appInfo.destination?.city,
-        dimension08: appInfo.packageCount,
-        dimension09: appInfo.rate?.currency,
-        //dimension10: appInfo.errors[0].id
-      });
+    if (
+      prev !== this.appInfoAnalyticsActionId &&
+      (AnalyticsTracker.CONVERSION_EVENT === analyticsActionName || AnalyticsTracker.EVENTS.includes(analyticsActionName as Events))
+    ) {
+      const dimention = {
+        ...this.getPageInfoDimention(pageInfo),
+        ...this.getAppInfoDimention(appInfo),
+      };
+
+      if (AnalyticsTracker.CONVERSION_EVENT === analyticsActionName) {
+        window.analytics.trackConversion(appInfo.rate?.amount, {
+          dimention,
+        });
+      } else {
+        window.analytics.trackEvent(analyticsActionName, {
+          dimention,
+        });
+      }
     }
+  }
+
+  private getPageInfoDimention(pageInfo: PageInfo) {
+    return {
+      dimension01: pageInfo.pageId,
+      dimension02: pageInfo.countryCode,
+      dimension03: pageInfo.languageCode,
+    };
+  }
+
+  private getAppInfoDimention(appInfo: AppInfo) {
+    return {
+      dimension04: appInfo.stepName,
+      dimension05: appInfo.stepNumber,
+      dimension06: this.getLocationAreaDimention(appInfo.origin),
+      dimension07: this.getLocationAreaDimention(appInfo.destination),
+      dimension08: appInfo.packageCount,
+      dimension09: appInfo.rate?.currency,
+      dimension10: this.getErrorsDimention(appInfo.errors),
+    };
+  }
+
+  private getLocationAreaDimention(locationArea: LocationArea | undefined) {
+    if (!locationArea) {
+      return;
+    }
+
+    return `<${locationArea.country}>_<${locationArea.city}>`;
+  }
+
+  private getErrorsDimention(errors: GeneralError[]) {
+    if (!errors || errors.length === 0) {
+      return;
+    }
+    return errors.reduce((prev, curr, index) => {
+      if (index === 0) {
+        return `<${curr.id}>_<${curr.message}>`;
+      }
+      return `${prev},<${curr.id}>_<${curr.message}>`;
+    }, '');
   }
 }

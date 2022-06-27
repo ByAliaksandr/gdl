@@ -21,7 +21,7 @@
       });
       // omitted: server call.
 
-      // console.log('!!!!! trackEvent', eventName, dimensions);
+      console.log('!!!!! trackEvent', eventName, dimensions);
     },
 
     trackConversion: function (revenue, dimensions) {
