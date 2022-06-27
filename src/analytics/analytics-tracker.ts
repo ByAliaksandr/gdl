@@ -20,10 +20,15 @@ export class AnalyticsTracker {
   private static readonly EVENTS = [Events.ORIGIN_COMPLETE, Events.DESTINATION_COMPLETE, Events.PACKAGES_COMPLETE, Events.SHIP_AGAIN];
   private static readonly CONVERSION_EVENT = Events.PACKAGES_COMPLETE;
 
-  private pageInfoAnalyticsActionId = '';
-  private appInfoAnalyticsActionId = '';
+  private pageInfoAnalyticsActionId;
+  private appInfoAnalyticsActionId;
 
-  constructor(private store: Store<{ dataLayer: DataLayer }>) {}
+  constructor(private store: Store<{ dataLayer: DataLayer }>) {
+    const dataLayer = this.store.getState().dataLayer;
+
+    this.pageInfoAnalyticsActionId = dataLayer.page._analyticsActionId;
+    this.appInfoAnalyticsActionId = dataLayer.app._analyticsActionId;
+  }
 
   trackPageInfoChanges() {
     const pageInfo = this.store.getState().dataLayer.page;
