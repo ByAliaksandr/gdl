@@ -28,3 +28,9 @@ _Note_ jest configuration is not set by default. Extra time is needed to investi
 # Development settings
 
 The project employs [prettier](https://prettier.io/docs/en/install.html) with a pre-commit hook. This makes sure all your commits are formatted.
+
+# Questions and answers
+
+- Why `_analyticsActionName` and `_analyticsActionId` properties are added?
+
+Analytics tracks the datalayer changes. Not all events perform a change in the datalayer. `_analyticsActionName` and `_analyticsActionId` properties keep the following separation `events -> store(datalayer) -> analytics` compate to `events -> analytics`. `_analyticsActionId` guarantees that all events are published even the same event is published multiple times.
