@@ -20,8 +20,8 @@ export class AnalyticsTracker {
   private static readonly EVENTS = [Events.ORIGIN_COMPLETE, Events.DESTINATION_COMPLETE, Events.PACKAGES_COMPLETE, Events.SHIP_AGAIN];
   private static readonly CONVERSION_EVENT = Events.PACKAGES_COMPLETE;
 
-  private pageInfoAnalyticsActionId;
-  private appInfoAnalyticsActionId;
+  private pageInfoAnalyticsActionId: string;
+  private appInfoAnalyticsActionId: string;
 
   constructor(private store: Store<{ dataLayer: DataLayer }>) {
     const dataLayer = this.store.getState().dataLayer;
@@ -72,7 +72,11 @@ export class AnalyticsTracker {
     }
   }
 
-  private getPageInfoDimention(pageInfo: PageInfo) {
+  private getPageInfoDimention(pageInfo: PageInfo): {
+    dimension01: string | undefined;
+    dimension02: string | undefined;
+    dimension03: string | undefined;
+  } {
     return {
       dimension01: pageInfo.pageId,
       dimension02: pageInfo.countryCode,
@@ -80,7 +84,15 @@ export class AnalyticsTracker {
     };
   }
 
-  private getAppInfoDimention(appInfo: AppInfo) {
+  private getAppInfoDimention(appInfo: AppInfo): {
+    dimension04: string | undefined;
+    dimension05: number | undefined;
+    dimension06: string | undefined;
+    dimension07: string | undefined;
+    dimension08: number | undefined;
+    dimension09: string | undefined;
+    dimension10: string | undefined;
+  } {
     return {
       dimension04: appInfo.stepName,
       dimension05: appInfo.stepNumber,
@@ -92,7 +104,7 @@ export class AnalyticsTracker {
     };
   }
 
-  private getLocationAreaDimention(locationArea: LocationArea | undefined) {
+  private getLocationAreaDimention(locationArea: LocationArea | undefined): string | undefined {
     if (!locationArea) {
       return;
     }
@@ -100,7 +112,7 @@ export class AnalyticsTracker {
     return `<${locationArea.country}>_<${locationArea.city}>`;
   }
 
-  private getErrorsDimention(errors: GeneralError[]) {
+  private getErrorsDimention(errors: GeneralError[]): string | undefined {
     if (!errors || errors.length === 0) {
       return;
     }

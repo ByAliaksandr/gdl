@@ -2,8 +2,8 @@ import { Store } from '@reduxjs/toolkit';
 import { DataLayer } from '../data-layer/interfaces/data-layer.interface';
 
 export class AnalyticsDebbuger {
-  private pageInfoAnalyticsActionId;
-  private appInfoAnalyticsActionId;
+  private pageInfoAnalyticsActionId: string;
+  private appInfoAnalyticsActionId: string;
 
   constructor(private store: Store<{ dataLayer: DataLayer }>) {
     const dataLayer = this.store.getState().dataLayer;
